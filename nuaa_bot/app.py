@@ -14,7 +14,8 @@ db = SQLAlchemy(app)
 
 # init werobot
 session_storage = MySQLStorage(db.engine.raw_connection())
-robot = WeRoBot(token='2333', session_storage=session_storage)
+app.config['BOT']['SESSION_STORAGE'] = session_storage
+robot = WeRoBot(config=app.config['BOT'])
 from nuaa_bot.bot import *  # register all handler
 
 # init app
