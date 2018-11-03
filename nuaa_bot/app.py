@@ -4,9 +4,10 @@ from werobot import WeRoBot
 from werobot.contrib.flask import make_view
 from werobot.session.mysqlstorage import MySQLStorage
 
+from nuaa_bot import config
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234qwer@127.0.0.1/nuaa_bot'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config.from_object(config)
 
 # init db
 db = SQLAlchemy(app)
