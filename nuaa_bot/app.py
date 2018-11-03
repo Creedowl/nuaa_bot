@@ -14,6 +14,7 @@ db = SQLAlchemy(app)
 # init werobot
 session_storage = MySQLStorage(db.engine.raw_connection())
 robot = WeRoBot(token='2333', session_storage=session_storage)
+from nuaa_bot.bot import *  # register all handler
 
 # init app
 app.add_url_rule(rule='/bot/', endpoint='robot', view_func=make_view(robot), methods=['GET', 'POST'])
