@@ -12,3 +12,16 @@ class User(db.Model):
     gender = db.Column(db.Boolean, nullable=False)
     dormitory = db.Column(db.String(20), nullable=False)
     remark = db.Column(db.Text)
+    open_id = db.Column(db.String(30))
+
+    def __repr__(self):
+        return '<User {}:{}>'.format(self.name, self.open_id)
+
+    # def save(self):
+    #     db.session.add(self)
+    #     db.session.commit()
+    #     return self
+    #
+    # def update(self):
+    #     db.session.commit()
+    #     return self

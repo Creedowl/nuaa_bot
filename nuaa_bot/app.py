@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from werobot import WeRoBot
 from werobot.contrib.flask import make_view
@@ -11,8 +12,10 @@ app.config.from_object(config)
 
 # init db
 db = SQLAlchemy(app)
+db.create_all()
+migrate = Migrate(app, db)
 
-# init werobot
+# init WeRoBot
 session_storage = MySQLStorage(db.engine.raw_connection())
 app.config['BOT']['SESSION_STORAGE'] = session_storage
 robot = WeRoBot(config=app.config['BOT'])
