@@ -1,10 +1,10 @@
 import os
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
-    os.getenv('DATABASE_USER', 'root'),
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
+    os.getenv('DATABASE_USER', 'nuaa_bot'),
     os.getenv('DATABASE_PASSWORD', '1234qwer'),
     os.getenv('DATABASE_HOST', '127.0.0.1'),
-    os.getenv('DATABASE_PORT', '3306'),
+    os.getenv('DATABASE_PORT', '5432'),
     os.getenv('DATABASE_DB', 'nuaa_bot'),
 )
 
@@ -17,7 +17,11 @@ MESSAGE = {
     'message_error': '信息错误',
     'authenticate_success': '认证成功',
     'unauthenticated': '你还未认证，请点击auth来认证身份',
-    'subscribe': '欢迎关注，请点击auth认证身份'
+    'subscribe': '欢迎关注，请点击auth认证身份',
+    'begin_import_user': '开始导入用户',
+    'handling_user': '正在处理第{}/{}位用户',
+    'user_existed': '用户已存在，跳过     ',
+    'user_import_succeeded': '用户导入成功，共{}条数据'
 }
 
 # WeRoBot config

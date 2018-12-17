@@ -12,36 +12,55 @@ def subscribe():
 @robot.unsubscribe
 def unsubscribe(message, session):
     session.clear()
-    return ''
+    return 'success'
 
 
-@robot.key_click('auth')
-def auth_click(message, session):
-    if session.get('authenticated'):
-        return mes['is_authenticated']
-    session['authenticating'] = True
-    return mes['begin_authenticate']
+# @robot.key_click('auth')
+# def auth_click(message, session):
+#
+#     session['authenticating'] = True
+#     return mes['begin_authenticate']
 
 
 @robot.text
-def text_handler(message, session):
+def text_router(message, session):
+    """
+    handle text user sent
+    :param message:
+    :param session:
+    :return:
+    """
     content = message.content
     if session.get('authenticating'):
-        info = content.split('-')
-        if len(info) == 1:
-            return mes['format_error']
-        name = info[0]
-        student_num = info[1]
-        user = User.query.filter_by(name=name, student_num=student_num).all()
-        if len(user) == 0:
-            return mes['message_error']
-        user = user[0]
-        user.open_id = message.source
-        db.session.add(user)
-        db.session.commit()
-        del session['authenticating']
-        session['authenticated'] = True
-        return mes['authenticate_success']
+        return user_authenticate(message, session)
     if not session.get('authenticated'):
+        if content == 'auth':
+            session['authenticating'] = True
+            return mes['begin_authenticate']
         return mes['unauthenticated']
     return '嘤嘤嘤'
+
+
+def user_authenticate(message, session):
+    """
+    authenticate uesr
+    :param message:
+    :param session:
+    :return: authenticating succeeded or failed
+    """
+    content = message.content
+    info = content.split('-')
+    if len(info) == 1:
+        return mes['format_error']
+    name = info[0]
+    student_num = info[1]
+    user = User.query.filter_by(name=name, student_num=student_num).all()
+    if len(user) == 0:
+        return mes['message_error']
+    user = user[0]
+    user.open_id = message.source
+    db.session.add(user)
+    db.session.commit()
+    del session['authenticating']
+    session['authenticated'] = True
+    return mes['authenticate_success']
